@@ -3,10 +3,12 @@ namespace QAHub.Models
 {
     public class RegressionTaskModel
     {
-
+        public int Id { get; set; }
         public string Title { get; set; }
 
         public string Category { get; set; }
+
+        public string Notes { get; set; }
 
         public int TeamNumber { get; set; }
 

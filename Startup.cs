@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using QAHub.Services;
 
 namespace QAHub
 {
@@ -29,6 +30,9 @@ namespace QAHub
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddSingleton<IRegressionTaskRepository, RegressionTaskService>();
+            services.AddSingleton<ISupportIssueRepository, SupportIssueService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,43 @@
+@model QAHub.Models.SupportIssueStatusModel
+
+@{
+    ViewBag.Title = "Add Status";
+    
+}
+
+<h2>Update Status</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Ticket Number @ViewData["TicketNumber"]</h4>
+        <h9>@ViewData["Description"]</h9>
+        <hr />
+        
+        <div class="form-group">
+           
+           <textarea asp-for="Message" rows="20"cols="500"></textarea>
+           
+        </div>
+        
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @*TODO : Until script helpers are available, adding script references manually*@
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+}
