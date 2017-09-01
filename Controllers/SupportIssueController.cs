@@ -43,7 +43,8 @@ namespace QAHub.Controllers
         [ActionName("Edit")]
         public IActionResult Edit(int id)
         {
-            return View();
+            var issue = _service.Get(id);
+            return View(issue);
         }
 
         [ActionName("EditStatus")]

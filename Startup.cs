@@ -33,6 +33,7 @@ namespace QAHub
 
             services.AddSingleton<IRegressionTaskRepository, RegressionTaskService>();
             services.AddSingleton<ISupportIssueRepository, SupportIssueService>();
+            services.AddSingleton<IReleaseRepository, ReleaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
