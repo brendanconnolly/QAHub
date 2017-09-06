@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiteDB;
 
 namespace QAHub.Models
 {
@@ -12,6 +13,8 @@ namespace QAHub.Models
             Resolution = new SupportIssueResolutionModel();
 
         }
+
+        [BsonId]
         public int Id { get; set; }
         public int TicketNumber { get; set; }
 

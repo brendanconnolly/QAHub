@@ -8,42 +8,56 @@ namespace QAHub.Services
     public class SupportIssueService : ISupportIssueRepository
     {
 
-        private List<SupportIssueModel> _repo;
+
 
         public SupportIssueService()
         {
-            _repo = new List<SupportIssueModel>();
-            _repo.Add(new SupportIssueModel()
-            {
-                Area = "Everywhere",
-                TicketNumber = 1,
-                Version = "4.5.0",
-                InitiallyRejected = true
-            });
+
         }
         public void Add(SupportIssueModel taskModel)
         {
-            _repo.Add(taskModel);
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                collection.Insert(taskModel);
+            }
         }
 
         public void Delete(int id)
         {
-            _repo = _repo.Where(x => x.Id != id).ToList();
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                collection.Delete(id);
+            }
         }
 
         public IEnumerable<SupportIssueModel> FetchAll()
         {
-            return _repo;
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                return collection.FindAll().ToList();
+            }
         }
 
         public SupportIssueModel Get(int id)
         {
-            return _repo.First(x => x.Id == id);
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                return collection.FindById(id);
+            }
         }
 
         public void UpdateStatus(int id, string message)
         {
-            _repo.First(x => x.Id == id).Status.Add(new SupportIssueStatusModel(message));
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                var issue = collection.FindById(id);
+                issue.Status.Add(new SupportIssueStatusModel(message));
+            }
         }
     }
 }

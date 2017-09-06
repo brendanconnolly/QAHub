@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LiteDB;
 using QAHub.Models;
 
 namespace QAHub.Services
@@ -8,45 +9,56 @@ namespace QAHub.Services
 
     public class RegressionTaskService : IRegressionTaskRepository
     {
-        private List<RegressionTaskModel> _regression;
+        private LiteCollection<RegressionTaskModel> _regression;
 
         public RegressionTaskService()
         {
-            _regression = new List<RegressionTaskModel>();
-
-            _regression.Add(new RegressionTaskModel()
+            using (var db = Storage.DataBase())
             {
-                Id = 1,
-                Category = "Credit Card 2.x",
-                Title = "Shift4",
-                Tester = "Anne"
-            });
+                _regression = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
 
-            _regression.Add(new RegressionTaskModel()
-            {
-                Id = 2,
-                Category = "Gift Card 2.x",
-                Title = "Agilysys (Visual One/LMS)",
-                Tester = "Jeff"
-            });
+                // if (_regression.Count() == 0)
+                // {
+                //     InitializeCollection();
+                // }
 
+            }
 
         }
 
+
+
         public IEnumerable<RegressionTaskModel> FetchAll()
         {
-            return _regression;
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
+                return collection.FindAll().ToList();
+
+            }
         }
 
         public void Add(RegressionTaskModel taskModel)
         {
 
-            _regression.Add(taskModel);
+            using (var db = Storage.DataBase())
+            {
+                var regressionTaskCollection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
+
+                regressionTaskCollection.Insert(taskModel);
+
+            }
         }
 
         public void Delete(int id)
         {
-            _regression = _regression.Where(x => x.Id != id).ToList();
+            using (var db = Storage.DataBase())
+            {
+                var regressionTaskCollection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
+
+                regressionTaskCollection.Delete(id);
+
+            }
         }
 
     }

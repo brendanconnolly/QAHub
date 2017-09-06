@@ -8,42 +8,49 @@ namespace QAHub.Services
 
     public class ReleaseService : IReleaseRepository
     {
-        private List<ReleaseModel> _release;
-
-        public ReleaseService()
+        private IRegressionTaskRepository _regressionRepo;
+        public ReleaseService(IRegressionTaskRepository regressionRepo)
         {
-            _release = new List<ReleaseModel>();
-
-            _release.Add(new ReleaseModel()
-            {
-                Id = 1,
-                Version = "4.5.0",
-
-            });
-
-
-
+            _regressionRepo = regressionRepo;
 
         }
 
         public ReleaseModel Get(int id)
         {
-            return _release.First(x => x.Id == id);
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
+                return collection.FindById(id);
+            }
         }
         public IEnumerable<ReleaseModel> FetchAll()
         {
-            return _release;
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
+
+                return collection.FindAll().ToList();
+            }
+
         }
 
         public void Add(ReleaseModel taskModel)
         {
-
-            _release.Add(taskModel);
+            taskModel.RegressionTasks = _regressionRepo.FetchAll();
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
+                collection.Insert(taskModel);
+            }
         }
 
         public void Delete(int id)
         {
-            _release = _release.Where(x => x.Id != id).ToList();
+            using (var db = Storage.DataBase())
+            {
+                var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
+                collection.Delete(id);
+            }
         }
 
     }

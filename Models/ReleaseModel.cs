@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LiteDB;
 
 namespace QAHub.Models
 {
@@ -9,6 +10,7 @@ namespace QAHub.Models
         {
             RegressionTasks = new List<RegressionTaskModel>();
         }
+        [BsonId]
         public int Id { get; set; }
         public string Version { get; set; }
         public IEnumerable<RegressionTaskModel> RegressionTasks { get; set; }
