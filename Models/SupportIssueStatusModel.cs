@@ -10,6 +10,11 @@ namespace QAHub.Models
             Date = DateTime.Now;
             Message = message;
         }
+
+        public SupportIssueStatusModel()
+        {
+
+        }
         public DateTime Date { get; set; }
 
         public string Message { get; set; }

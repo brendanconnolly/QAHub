@@ -17,5 +17,6 @@ namespace QAHub.Models
 
         public string Tester { get; set; }
 
+        public bool IncludeInRelease { get; set; }
     }
 }

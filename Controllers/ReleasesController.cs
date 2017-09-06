@@ -42,6 +42,22 @@ namespace QAHub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [ActionName("EditRegressionAssignments")]
+        public IActionResult EditRegressionAssignments(int id)
+        {
+            var rel = _release.Get(id);
+            ViewBag.Tasks = rel.RegressionTasks;
+            return View(rel);
+        }
+
+        [HttpPut, ActionName("Edit")]
+        public IActionResult Edit(ReleaseModel taskModel)
+        {
+            Delete(taskModel.Id);
+            _release.Add(taskModel);
+            return RedirectToAction(nameof(Index));
+        }
+
         [ActionName("Delete")]
         public IActionResult Delete(int id)
         {

@@ -9,20 +9,11 @@ namespace QAHub.Services
 
     public class RegressionTaskService : IRegressionTaskRepository
     {
-        private LiteCollection<RegressionTaskModel> _regression;
+
 
         public RegressionTaskService()
         {
-            using (var db = Storage.DataBase())
-            {
-                _regression = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
 
-                // if (_regression.Count() == 0)
-                // {
-                //     InitializeCollection();
-                // }
-
-            }
 
         }
 
@@ -30,7 +21,7 @@ namespace QAHub.Services
 
         public IEnumerable<RegressionTaskModel> FetchAll()
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
                 return collection.FindAll().ToList();
@@ -41,7 +32,7 @@ namespace QAHub.Services
         public void Add(RegressionTaskModel taskModel)
         {
 
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var regressionTaskCollection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
 
@@ -52,7 +43,7 @@ namespace QAHub.Services
 
         public void Delete(int id)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var regressionTaskCollection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
 

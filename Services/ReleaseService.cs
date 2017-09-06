@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LiteDB;
 using QAHub.Models;
 
 namespace QAHub.Services
@@ -17,7 +18,7 @@ namespace QAHub.Services
 
         public ReleaseModel Get(int id)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
                 return collection.FindById(id);
@@ -25,7 +26,7 @@ namespace QAHub.Services
         }
         public IEnumerable<ReleaseModel> FetchAll()
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
 
@@ -37,7 +38,7 @@ namespace QAHub.Services
         public void Add(ReleaseModel taskModel)
         {
             taskModel.RegressionTasks = _regressionRepo.FetchAll();
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
                 collection.Insert(taskModel);
@@ -46,7 +47,7 @@ namespace QAHub.Services
 
         public void Delete(int id)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<ReleaseModel>(Storage.ReleaseCollectionName);
                 collection.Delete(id);

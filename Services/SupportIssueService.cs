@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiteDB;
 using QAHub.Models;
 
 namespace QAHub.Services
@@ -16,7 +17,7 @@ namespace QAHub.Services
         }
         public void Add(SupportIssueModel taskModel)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
                 collection.Insert(taskModel);
@@ -25,7 +26,7 @@ namespace QAHub.Services
 
         public void Delete(int id)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
                 collection.Delete(id);
@@ -34,7 +35,7 @@ namespace QAHub.Services
 
         public IEnumerable<SupportIssueModel> FetchAll()
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
                 return collection.FindAll().ToList();
@@ -43,7 +44,7 @@ namespace QAHub.Services
 
         public SupportIssueModel Get(int id)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
                 return collection.FindById(id);
@@ -52,11 +53,12 @@ namespace QAHub.Services
 
         public void UpdateStatus(int id, string message)
         {
-            using (var db = Storage.DataBase())
+            using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
                 var issue = collection.FindById(id);
                 issue.Status.Add(new SupportIssueStatusModel(message));
+                collection.Update(issue);
             }
         }
     }
