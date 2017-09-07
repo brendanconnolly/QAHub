@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace QAHub.Models
 {
     public enum SupportIssueResolutionType
@@ -17,8 +19,12 @@ namespace QAHub.Models
     }
     public class SupportIssueResolutionModel
     {
+        [Required]
         public SupportIssueResolutionType Category { get; set; }
         public bool IsNewBug { get; set; }
         public int BugNumber { get; set; }
+
+        [Required]
+        public string ClosingRemarks { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace QAHub.Models
 {
@@ -17,6 +18,7 @@ namespace QAHub.Models
         }
         public DateTime Date { get; set; }
 
+        [Required]
         public string Message { get; set; }
 
     }

@@ -1,0 +1,54 @@
+@model QAHub.Models.SupportIssueResolutionModel
+@using QAHub.Models;
+@{
+    ViewBag.Title = "Reolve Issue";
+    
+}
+
+<h2></h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Ticket Number @ViewData["TicketNumber"]</h4>
+        <h9>@ViewData["Description"]</h9>
+        <hr />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         <div class="form-group">
+            @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select asp-for="Category" asp-items="Html.GetEnumSelectList<SupportIssueResolutionType>()" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group">
+           @Html.LabelFor(model => model.ClosingRemarks, new { @class = "control-label col-md-2" })
+           <div class="col-md-10">
+           <textarea asp-for="ClosingRemarks" rows="20"cols="500"></textarea>
+           <p>
+           <span asp-validation-for="ClosingRemarks"  class="text-danger"></span>
+           </p>
+           </div>
+        </div>
+        
+       
+        <div class="form-group">
+            
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @*TODO : Until script helpers are available, adding script references manually*@
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+}

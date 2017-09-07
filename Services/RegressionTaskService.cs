@@ -24,7 +24,7 @@ namespace QAHub.Services
             using (var db = new LiteDatabase(Storage.Db))
             {
                 var collection = db.GetCollection<RegressionTaskModel>(Storage.RegressionCollectionName);
-                return collection.FindAll().ToList();
+                return collection.FindAll().OrderBy(x => x.Category).ThenBy(t => t.Title).ToList();
 
             }
         }

@@ -3,13 +3,8 @@
     ViewData["Title"] = "Support Issues";
 }
 
-<h2>Support Issues</h2>
+<h2>Closed Support Issues</h2>
 
-<p>
-   @Html.ActionLink("Add New", "Create" , null, null,new { @class = "button" })    
-
-   @Html.ActionLink("Closed Issues", "ClosedIssues", null, null,new { @class = "button" })
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -51,29 +46,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <table>
-               <tr>
-                   <td><a  asp-action="EditStatus" asp-route-id="@item.Id">- Update Status</a> </td>
-               </tr>
-               <tr>
-                   <td><a  asp-action="EditResolve" asp-route-id="@item.Id">- Resolve</a></td>
-               </tr>
-               <tr>    
-                   <td><a asp-action="Edit" asp-route-id="@item.Id">- Edit</a></td>
-               </tr>
-               <tr>
-                   <td><a  asp-action="Details" asp-route-id="@item.Id">- Details</a></td>
-               </tr>
-               <tr>
-                <td><a asp-action="Delete" asp-route-id="@item.Id">- Delete</a></td>
-                </tr>
-                </table>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Detail</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TicketNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EscalatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeEscalatedOn)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Version)
@@ -90,11 +74,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.QAOwner)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Updated)
+                @Html.DisplayFor(modelItem => item.Resolution.Category)
             </td>
+
             <td>
-                @Html.TextAreaFor(modelItem => item.LatestUpdate,5,50,new { @readonly = true })
+                @Html.TextAreaFor(modelItem => item.LatestUpdate,3,50,new { @readonly = true })
             </td>
            
         </tr>

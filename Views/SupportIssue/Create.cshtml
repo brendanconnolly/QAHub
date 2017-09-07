@@ -10,53 +10,53 @@
    <div class="form-horizontal">
         <h4>Support Issue</h4>
         <hr />
-        @Html.ValidationSummary(true)
-
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TicketNumber, new { @class = "control-label col-md-2" })
+            <label asp-for="TicketNumber" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TicketNumber)
-                @Html.ValidationMessageFor(model => model.TicketNumber)
+               <input asp-for="TicketNumber" class="form-control" />
+               <span asp-validation-for="TicketNumber"  class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Version, new { @class = "control-label col-md-2" })
+            <label asp-for="Version" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Version)
-                @Html.ValidationMessageFor(model => model.Version)
+                <input asp-for="Version" class="form-control" />
+                <span asp-validation-for="Version"  class="text-danger"></span>
             </div>
         </div>
          <div class="form-group">
-            @Html.LabelFor(model => model.Area, new { @class = "control-label col-md-2" })
+            <label asp-for="Area" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Area)
-                @Html.ValidationMessageFor(model => model.Area)
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area"  class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <label asp-for="Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description"  class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.QAOwner, new { @class = "control-label col-md-2" })
+            <label asp-for="QAOwner" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.QAOwner)
-                @Html.ValidationMessageFor(model => model.QAOwner)
+                <input asp-for="QAOwner" class="form-control" />
+                <span asp-validation-for="QAOwner"  class="text-danger"></span>
+
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.SupportOwner, new { @class = "control-label col-md-2" })
+            <label asp-for="SupportOwner" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SupportOwner)
-                @Html.ValidationMessageFor(model => model.SupportOwner)
+                <input asp-for="SupportOwner" class="form-control" />
+                <span asp-validation-for="SupportOwner"  class="text-danger"></span>
             </div>
         </div>
 
-
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

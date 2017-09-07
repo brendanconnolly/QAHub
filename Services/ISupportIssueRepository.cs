@@ -8,6 +8,10 @@ namespace QAHub.Services
     {
         IEnumerable<SupportIssueModel> FetchAll();
 
+        IEnumerable<SupportIssueModel> FetchOpenIssues();
+
+        IEnumerable<SupportIssueModel> FetchClosedIssues();
+
         SupportIssueModel Get(int id);
 
         void Add(SupportIssueModel taskModel);
@@ -15,5 +19,7 @@ namespace QAHub.Services
         void Delete(int id);
 
         void UpdateStatus(int id, string message);
+
+        void ResolveIssue(int id, SupportIssueResolutionModel model);
     }
 }

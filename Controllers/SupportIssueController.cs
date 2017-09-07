@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using QAHub.Services;
 using QAHub.Models;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace QAHub.Controllers
 {
@@ -18,7 +20,13 @@ namespace QAHub.Controllers
 
         public IActionResult Index()
         {
-            return View(_service.FetchAll());
+            return View(_service.FetchOpenIssues());
+        }
+
+        [ActionName("ClosedIssues")]
+        public IActionResult ClosedIssues()
+        {
+            return View(_service.FetchClosedIssues());
         }
 
         public IActionResult Create()
@@ -29,8 +37,26 @@ namespace QAHub.Controllers
         [HttpPost, ActionName("Create")]
         public IActionResult Create(SupportIssueModel taskModel)
         {
-            _service.Add(taskModel);
-            return RedirectToAction(nameof(Index));
+
+
+            ModelState["Resolution.ClosingRemarks"].Errors.Clear();
+
+            //no resolution on new support issue
+            var resolutions = ModelState.Where(x => x.Key.Contains("Resolution"));
+            foreach (var x in resolutions)
+            {
+                ModelState.Remove(x.Key);
+            }
+
+            if (ModelState.IsValid)
+            {
+                taskModel.EscalatedOn = DateTime.Now;
+                _service.Add(taskModel);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(taskModel);
+
         }
 
         [ActionName("Delete")]
@@ -57,10 +83,41 @@ namespace QAHub.Controllers
         }
 
         [HttpPost, ActionName("EditStatus")]
-        public IActionResult UpdateStatus(int id, string message)
+        public IActionResult UpdateStatus(int id, SupportIssueStatusModel model)
         {
-            _service.UpdateStatus(id, message);
-            return RedirectToAction(nameof(Index));
+
+            TryValidateModel(model);
+            if (ModelState.IsValid)
+            {
+                _service.UpdateStatus(id, model.Message);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
+
+        [ActionName("EditResolve")]
+        public IActionResult ResolveIssue(int id)
+        {
+            var issue = _service.Get(id);
+            ViewBag.TicketNumber = issue.TicketNumber;
+            ViewBag.Description = issue.Description;
+            return View();
+        }
+
+        [HttpPost, ActionName("EditResolve")]
+        public IActionResult ResolveIssue(int id, SupportIssueResolutionModel model)
+        {
+            TryValidateModel(model);
+            if (ModelState.IsValid)
+            {
+                _service.ResolveIssue(id, model);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+
+
         }
     }
 }

@@ -30,6 +30,14 @@ namespace QAHub.Controllers
             return View(_release.FetchAll());
         }
 
+
+        [ActionName("Details")]
+        public IActionResult ReleaseDetail(int id)
+        {
+            var rel = _release.Get(id);
+            return View(rel);
+        }
+
         public IActionResult Create()
         {
             return View();

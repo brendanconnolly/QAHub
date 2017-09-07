@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LiteDB;
@@ -59,6 +60,38 @@ namespace QAHub.Services
                 var issue = collection.FindById(id);
                 issue.Status.Add(new SupportIssueStatusModel(message));
                 collection.Update(issue);
+            }
+        }
+
+        public void ResolveIssue(int id, SupportIssueResolutionModel model)
+        {
+            using (var db = new LiteDatabase(Storage.Db))
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                var issue = collection.FindById(id);
+                issue.Resolution = model;
+                issue.Status.Add(new SupportIssueStatusModel(model.ClosingRemarks));
+                issue.DeEscalatedOn = DateTime.Now;
+                collection.Update(issue);
+            }
+
+        }
+
+        public IEnumerable<SupportIssueModel> FetchOpenIssues()
+        {
+            using (var db = new LiteDatabase(Storage.Db))
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                return collection.Find(x => !x.IsClosed).ToList();
+            }
+        }
+
+        public IEnumerable<SupportIssueModel> FetchClosedIssues()
+        {
+            using (var db = new LiteDatabase(Storage.Db))
+            {
+                var collection = db.GetCollection<SupportIssueModel>(Storage.supportIssueCollectionName);
+                return collection.Find(x => x.IsClosed).ToList();
             }
         }
     }
